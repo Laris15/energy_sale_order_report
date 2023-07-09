@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record id="energy_view_partner_form" model="ir.ui.view">
+            <field name="name">client.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group/field[@name='vat']" position="after">
+                    <field name="siret"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
