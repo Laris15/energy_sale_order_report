@@ -1,67 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="energy_report_saleorder_document">
-        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
-        <div class="page" style="height: 100%;width: 100%;">
-            <!--            custom header-->
-            <div class="header" t-att-style="report_header_style"
-                 style="font-family: Lato, Lucida Grande, Helvetica neue, Helvetica, Verdana, Arial, sans-serif;height: 30%;width: 100%; ">
-                <div class="row zero_min_height">
-                    <img src="/energy_sale_order_report/static/description/logo.png" alt="Image is not loading"
-                         style="height: 100px;
-                                width: 100px;"/>
-                </div>
+    <template id="energy_report_saleorder_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//p[@t-if='doc.partner_id.vat']" position="replace">
+            <p>
+                <t t-if="doc.partner_id.siret">SIRET:
+                    <span t-field="doc.partner_id.siret"/>
+                </t>
+            </p>
+        </xpath>
+        <xpath expr="//table[hasclass('o_main_table')]/thead/tr/th[@name='th_description']" position="replace">
+            <th name="th_address" class="text-left">Address</th>
+            <th name="th_location" class="text-left">Location</th>
+        </xpath>
+        <xpath expr="//table[hasclass('o_main_table')]/thead/tr/th[@name='th_taxes']" position="replace">
+            <th></th>
+        </xpath>
+        <xpath expr="//table[hasclass('o_main_table')]/tbody/t/tr/t/td[@name='td_name']" position="replace">
+            <td name="td_address">
+                <span t-field="line.address"/>
+            </td>
+            <td name="td_localisation">
+                <span t-field="line.localisation"/>
+            </td>
+        </xpath>
 
-                <div class="row" style="font-weight:bold;font-size:16px;">
-                    <div class="col-5 mb4">
-                        <div>54, Avenue Philippe Auguste - 75011 Paris</div>
-                        <div>SIREN: 807 839 881 R.C.S. Paris</div>
-                        <div>Tél. 01.86.98.25.61</div>
-                        <div>Port. 07.82.61.35.26</div>
-                    </div>
-                    <div class="col-2 mb4">
+        <xpath expr="//table[hasclass('o_main_table')]/tbody/t/tr/t/td[@name='td_taxes']" position="replace">
+            <td></td>
+        </xpath>
 
-                    </div>
-                    <div class="col-5 mb4">
-                        <div>
-                           <span t-field="doc.partner_id.name"/>
-                        </div>
-                        <div>
-                            <span t-field="doc.partner_id.street"/>
-                        </div>
-                        <div>
-                            <span t-field="doc.partner_id.street2"/>
-                        </div>
-                       <!-- <div>
-                            <span t-field="doc.partner_id.street"/>
-                        </div>-->
+        <xpath expr="//table[hasclass('table-sm')]/tr[hasclass('o_total')]" position="after">
+            <tr class="border-black o_subtotal" style="">
+                <td name="td_amount_untaxed_label">
+                    <strong>Prime Certificat d'Economie d'Energie</strong>
+                </td>
+                <td name="td_amount_untaxed" class="text-right">
+                    -
+                    <span t-field="doc.amount_total"/>
+                </td>
+            </tr>
+            <tr class="border-black o_subtotal" style="">
+                <td name="td_amount_untaxed_label">
+                    <strong>NET A PAYER</strong>
+                </td>
+                <td name="td_amount_untaxed" class="text-right">
+                    <span>0,00€</span>
+                </td>
+            </tr>
+        </xpath>
 
-                        <div style="font-style: italic;"><span t-field="doc.partner_id.siret"/> </div>
-                    </div>
-                </div>
-                <div class="row"
-                     style="font-family: 'Trebuchet MS', sans-serif;height: 30px;width: 100%; background-color:grey;">
-                    <div>DEVIS</div>
-                </div>
-                <div class="row" style="font-weight:bold;font-size:18px;">
-                    <div class="col-5 mb4">
-
-                    </div>
-                    <div class="col-2 mb4">
-
-                    </div>
-                    <div class="col-5 mb4">
-                        <div>
-                            <strong>N° : <span t-field="doc.name"/></strong>
-                        </div>
-                        <div>
-                            <strong>Date : <span class="m-0" t-field="doc.date_order"/></strong>
-                        </div>
-                    </div>
-                </div>
-                <!--            <br/>-->
+        <xpath expr="//table[hasclass('o_main_table')]" position="before">
+            <div>
                 <h6>ISOLATION D'UN RESEAU HYDRAULIQUE D'EAU CHAUDE SANITAIRE ET CHAUFFAGE HORS VOLUME CHAUFFE</h6>
-                <p style="width: 97%;">
+                <p>
                     Dépose et enlèvement de l'ancien calorifuge. Pose d'un calorifuge neuf conforme à la réglementation
                     RT
                     2012 avec
@@ -70,79 +60,11 @@
                     cave/ parking
                     / parties communes.
                 </p>
-
             </div>
-            <br/>
-            <table border="1px" cellspacing="0" cellpadding="0" width="100%" style="margin-top:210px;color:black;">
-                <thead style="height: 30px;width: 100%; background-color:grey;">
-                    <tr style="color:white; font-size:12px;">
-                        <th style="padding:3px;width:40%;text-align:left;">Intervention</th>
-                        <th style="padding:3px;width:20%;text-align:center;">Quantité ML</th>
-                        <th style="padding:3px;width:10%;text-align:center;">Prix Unit</th>
-                        <th style="padding:3px;width:30%;text-align:center;">Montant H.T</th>
-                    </tr>
-                </thead>
-                <tbody class="sale_tbody">
-                    <t t-set="current_subtotal" t-value="0"/>
-
-                    <t t-foreach="doc.order_line" t-as="line">
-                        <tr style="font-weight:bold;">
-                            <td style="padding:3px;width:30%;" align="left" name="td_name">
-                                <span t-field="line.address"/><br/><br/>
-                                <span t-field="line.localisation"/>
-                            </td>
-                            <td align="right" style="padding:3px;width:20%;text-align:center;" name="td_quantity">
-                                <span t-field="line.product_uom_qty"/>
-                                <span t-field="line.product_uom"/>
-                            </td>
-                            <td align="right" style="padding:3px;width:10%;text-align:center;" name="td_priceunit">
-                                <span t-field="line.price_unit"/>
-                            </td>
-                            <td name="td_subtotal" class="text-right o_price_total" style="padding:3px;width:40%;text-align:left;">
-                                <span t-field="line.price_subtotal"/>
-                            </td>
-                        </tr>
-                    </t>
-                        <tr style="font-weight:bold;">
-                            <td style="padding:3px;width:30%;" align="left">
-                                <p style="text-decoration: underline;">TOTAL METRE LINEAIRE :</p>
-                            </td>
-                            <td align="center" style="padding:3px;width:20%;"><span t-esc="doc.get_total_qty()"/>ML</td>
-                            <td align="right" style="padding:3px;width:10%;"> </td>
-                            <td align="right" style="padding:3px;width:40%;"><span t-field="doc.amount_total"/></td>
-                        </tr>
-                </tbody>
-            </table>
-            <br/>
-            <br/>
-            <table border="1px" cellspacing="0" cellpadding="0" width="100%" style="color:black;">
-
-                <tbody class="clearfix" name="so_total_summary">
-                    <tr style="font-weight:bold;" >
-                        <td align="left" style="padding:3px;width:70%;">TOTAL H.T</td>
-                        <td align="right" style="padding:3px;width:30%;" name="td_amount_untaxed"><span t-field="doc.amount_untaxed"/></td>
-                    </tr>
-                    <tr style="font-weight:bold;">
-                        <td align="left" style="padding:3px;width:70%;">TVA (20%)</td>
-                        <td align="right" style="padding:3px;width:30%;"><span t-field="doc.amount_tax"/></td>
-                    </tr>
-                    <tr style="font-weight:bold;">
-                        <td align="left" style="padding:3px;width:70%;">TOTAL T.T.C</td>
-                        <td align="right" style="padding:3px;width:30%;" name="td_amount_total"><span t-field="doc.amount_total"/></td>
-                    </tr>
-                    <tr style="font-weight:bold;">
-                        <td align="left" style="padding:3px;width:70%;">Prime Certificat d'Economie d'Energie</td>
-                        <td align="right" style="padding:3px;width:30%;">- €</td>
-                    </tr>
-                    <tr style="font-weight:bold;">
-                        <td align="left" style="padding:3px;width:70%;">NET A PAYER</td>
-                        <td align="right" style="padding:3px;width:30%;" name="td_amount_total"><span t-field="doc.amount_total"/></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="col-5 mb4 text-right" style="padding-left:15px;width:97%;">
-                <span>
+        </xpath>
+        <xpath expr="//div[@class='clearfix']" position="after">
+            <div>
+                <p>
                     Poste, hors volume chauffé, réseau en sous-sol/cave ou vide sanitaire. Matériel ou installation:
                     Dépose
                     ou enlèvement de l'ancien calorifuge Pose d'un calorifuge neuf de marque ISOVER, Type U PROTECT PIPE
@@ -156,70 +78,80 @@
                     aluminium.Lépaisseur installée, soit 20,
                     30,40,50,60,70 mm sera déterminée selon le diamètre de la tuyauterie, par la conformité en classe 4.
                     Mise en sacs à gravats et évacuation, finition, rangement,replis du chantier.
-                </span>
-                <br/>
-                <br/>
-                <span>
-                    Les travaux ou prestations, objet du présent document, donneront lieu à une contribution financière
+                </p>
+                <p>
+                    Les travaux ou prestations, objet du présent document, donneront lieu à une contribution
+                    financière
                     VERIGO, versée par VERTIGO dans le
-                    cadre de son rôle incitatif, sous forme de prime, directement ou via son(ses) mandataire(s), sous
+                    cadre de son rôle incitatif, sous forme de prime, directement ou via son(ses) mandataire(s),
+                    sous
                     réserve de l'engagement de fournir exclusivement
                     à VERTIGO, les documents nécessaires à la valorisation des opérations ou titre du dispositif des
                     Certificat d'Economies
                     d'Energie et sous réserve de la validation de l'éligibilité du dossier par VERTIGO puis par
                     l'autorité
                     administrative compétente. Le montant de
-                    cette contribution financière, hors champ d'application de la T.V.A, est susceptible de varier en
+                    cette contribution financière, hors champ d'application de la T.V.A, est susceptible de varier
+                    en
                     fonction des travaux effectivement réalisés et du
-                    volume des CEE attribués à l'opération et est estimé à : MONTANT TTC
-                </span>
-                <br/>
-                <span>
+                    volume des CEE attribués à l'opération et est estimé à : <strong><span t-field="doc.amount_total"/></strong>
+                </p>
+                <p>
                     Le client accepte que la société ENERGY de FRANCE, mandataire de VERTIGO collecte et traite ces
                     données
                     à caractère personnel pour les besoins du
-                    dépot d'un dossier CEE sur le registre EMMY conformément aux dispositions réglementaires en vigueur
+                    dépot d'un dossier CEE sur le registre EMMY conformément aux dispositions réglementaires en
+                    vigueur
                     et
                     qu'il communique ces
-                    données à VERTIGO à des fins de contrôle de la conformité des opérations réalisés chez le client.
+                    données à VERTIGO à des fins de contrôle de la conformité des opérations réalisés chez le
+                    client.
                     VERTIGO s'engage à respecter la réglementation
                     française et européenne relative à la protection des données à caractère personnel.
-                </span>
+                </p>
+                <table style="width:100%;">
+                    <tr>
+                        <td style="text-decoration:underline;font-weight:bold;">
+                            <span align="left">Bon pour accord le :</span>
+                        </td>
+                        <td style="text-decoration:underline;font-weight:bold;">
+                            <span align="right">Nom et Prénom :</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-decoration:underline;font-weight:bold;">
+                            <span align="left">Signature et Cachet :</span>
+                        </td>
+                        <td style="text-decoration:underline;font-weight:bold;">
+                            <span align="right">Fonction :</span>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <br/>
-            <table style="width:100%;">
-                <tr>
-                    <td style="text-decoration:underline;font-weight:bold;">Bon pour accord le :</td>
-                    <td style="text-decoration:underline;font-weight:bold;">Nom et Prénom :</td>
-                </tr>
-
-                <tr>
-                    <td style="text-decoration:underline;font-weight:bold;">Signature et Cachet :</td>
-                    <td style="text-decoration:underline;font-weight:bold;">Fonction :</td>
-                </tr>
-            </table>
-            <br/>
-            <!-- Custom footer -->
-            <div class="text-center" style="text-align: center;">
-                <span align="center" style="font-weight:bold;">ENERGY de FRANCE</span><br/>
-                <span align="center">SIREN: 807 839 881 R.C.S. Paris</span><br/>
-                <span align="center">54, Avenue Philippe Auguste - 75011 Paris</span><br/>
-                <span align="center">Tél:01.86.98.25.61. - 09.77.29.29.96 - Portable:07.82.61.35.26 -
-                    <a href="#  ">contact@energydefrance.fr</a>
-                </span>
-            </div>
-        </div>
-
-
+        </xpath>
     </template>
 
-    <template id="energy_report_saleorder">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <t t-call="energy_sale_order_report.energy_report_saleorder_document" t-lang="doc.partner_id.lang"/>
-            </t>
-        </t>
+    <!--    modify the company informations in the header-->
+    <template id="energy_external_layout_background" inherit_id="web.external_layout_background">
+        <xpath expr="//div/div[@class='float-left company_address']/span[@t-field='company.partner_id']"
+               position="replace">
+            <div t-if="company.street">
+                <span t-field="company.street"/>
+                -
+                <span t-field="company.zip"/>
+                <span t-field="company.city"/>
+            </div>
+            <div t-if="company.siret">SIRET:
+                <span t-field="company.siret"/>
+                <span t-field="company.country_id"/>
+            </div>
+            <div t-if="company.phone">Tel:
+                <span class="o_force_ltr" t-field="company.phone"/>
+            </div>
+            <div t-if="company.email">
+                <span t-field="company.email"/>
+            </div>
+        </xpath>
     </template>
-
-
 </odoo>
