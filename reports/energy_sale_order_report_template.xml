@@ -109,7 +109,7 @@
                     VERTIGO s'engage à respecter la réglementation
                     française et européenne relative à la protection des données à caractère personnel.
                 </p>
-                <table style="width:100%;">
+                <table style="width:100%;border-collapse: separate;border-spacing: 10px;">
                     <tr>
                         <td style="text-decoration:underline;font-weight:bold;">
                             <span align="left">Bon pour accord le :</span>
@@ -118,7 +118,10 @@
                             <span align="right">Nom et Prénom :</span>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td> </td>
+                        <td> </td>
+                    </tr>
                     <tr>
                         <td style="text-decoration:underline;font-weight:bold;">
                             <span align="left">Signature et Cachet :</span>
