@@ -2,69 +2,71 @@
 <odoo>
     <template id="energy_report_saleorder_document">
         <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
-        <div class="page" style="height: 100%;width: 100%;">
+        <div class="page" style="height: 100%;width:90%;" align="center">
             <!--            custom header-->
             <div class="header" t-att-style="report_header_style"
-                 style="font-family: Lato, Lucida Grande, Helvetica neue, Helvetica, Verdana, Arial, sans-serif;height: 30%;width: 100%; ">
+                 style="font-family: Lato, Lucida Grande, Helvetica neue, Helvetica, Verdana, Arial, sans-serif;height: 30%;width:width:90%;">
                 <div class="row zero_min_height">
                     <img src="/energy_sale_order_report/static/description/logo.png" alt="Image is not loading"
                          style="height: 100px;
                                 width: 100px;"/>
                 </div>
-                <hr width="50%" align="center"/>
                 <div class="row" style="font-weight:bold;font-size:16px;">
                     <div class="col-5 mb4">
-                        <div><span t-if="doc.company_id.name"><span tt-esc="doc.company_id.name"/></span></div>
-                        <div><span t-if="doc.company_id.street"><span tt-esc="doc.company_id.street"/></span></div>
-                        <div><span t-if="doc.company_id.zip"><span tt-esc="doc.company_id.zip"/> - <span tt-esc="doc.company_id.city"/></span></div>
-                        <div><span t-if="doc.company_id.phone">Tel: <span tt-esc="doc.company_id.phone"/></span></div>
-                        <div><span t-if="doc.company_id.email"><span tt-esc="doc.company_id.email"/></span></div>
-                    </div>
-                    <div class="col-2 mb4">
-
-                    </div>
-                    <div class="col-5 mb4">
-
+                        <div t-if="doc.company_id.name">
+                            <span t-field="doc.company_id.name"/>
+                        </div>
+                        <div t-if="doc.company_id.street">
+                            <span t-field="doc.company_id.street"/>
+                        </div>
+                        <div t-if="doc.company_id.street">
+                            <span t-field="doc.company_id.zip"/>
+                            -
+                            <span t-field="doc.company_id.city"/>
+                        </div>
+                         <div t-if="doc.company_id.phone">Tel:
+                            <span class="o_force_ltr" t-field="doc.company_id.phone"/>
+                        </div>
+                        <div t-if="doc.company_id.email">
+                            <span t-field="doc.company_id.email"/>
+                        </div>
                     </div>
                 </div>
-                <div class="row" style="font-weight:bold;font-size:16px;">
+                <br/>
+                <br/>
+                <div class="row" style="font-weight:bold;font-size:16px;" align="right">
                     <div class="col-5 mb4">
-
-                    </div>
-                    <div class="col-2 mb4">
-
-                    </div>
-                    <div class="col-5 mb4">
-                        <div><span t-if="doc.partner_id.name"><span tt-esc="doc.partner_id.name"/></span></div>
-                        <div><span t-if="doc.partner_id.street"><span tt-esc="doc.partner_id.street"/></span></div>
-                        <div><span t-if="doc.partner_id.street2"><span tt-esc="doc.partner_id.street2"/></span></div>
-                        <div><span t-if="doc.partner_id.name"><span tt-esc="doc.partner_id.name"/></span></div>
-                        <div style="font-style: italic;"><span t-field="doc.partner_id.siret"/> </div>
+                        <div t-if="doc.partner_id.name">
+                            <span t-field="doc.partner_id.name"/>
+                        </div>
+                        <div t-if="doc.partner_id.street">
+                            <span t-field="doc.partner_id.street"/>
+                        </div>
+                        <div t-if="doc.partner_id.street2">
+                            <span t-field="doc.partner_id.street2"/>
+                        </div>
+                        <div t-if="doc.partner_id.siret">
+                            SIRET: <span t-field="doc.partner_id.siret"/>
+                        </div>
                     </div>
                 </div>
                 <div class="row"
-                     style="font-family: 'Trebuchet MS', sans-serif;height: 30px;width: 100%; background-color:green;">
+                     style="font-size:20px;font-family:Helvetica;height:40px;background-color:green; color:white; padding:5px" align="center">
                     <div>DEVIS</div>
                 </div>
-                <div class="row" style="font-weight:bold;font-size:18px;">
+                <div class="row" style="font-weight:bold;font-size:14px;width:80%;">
                     <div class="col-5 mb4">
-
-                    </div>
-                    <div class="col-2 mb4">
-
-                    </div>
-                    <div class="col-5 mb4">
-                        <div>
+                        <div align="right">
                             <strong>N° : <span t-field="doc.name"/></strong>
                         </div>
-                        <div>
+                        <div align="right">
                             <strong>Date : <span class="m-0" t-field="doc.date_order"/></strong>
                         </div>
                     </div>
                 </div>
                 <!--            <br/>-->
-                <h6>ISOLATION D'UN RESEAU HYDRAULIQUE D'EAU CHAUDE SANITAIRE ET CHAUFFAGE HORS VOLUME CHAUFFE</h6>
-                <p style="width: 97%;">
+                <h6 style="font-weight:bold;font-size:17px;">ISOLATION D'UN RESEAU HYDRAULIQUE D'EAU CHAUDE SANITAIRE ET CHAUFFAGE HORS VOLUME CHAUFFE</h6>
+                <p style="font-size:12px;">
                     Dépose et enlèvement de l'ancien calorifuge. Pose d'un calorifuge neuf conforme à la réglementation
                     RT
                     2012 avec
@@ -76,7 +78,7 @@
 <!--                <div>Operation: <span t-field="doc.operation_type"/> </div>-->
             </div>
             <br/>
-            <table class="table table-sm o_main_table" style="margin-top: 100px;width:90%;">
+            <table class="table table-sm o_main_table" style="margin-top: 200px;width:90%;">
                 <!-- In case we want to repeat the header, remove "display: table-row-group" -->
                 <thead style="display: table-row-group; background-color:green;">
                     <tr>
@@ -157,34 +159,6 @@
                 </div>
             </div>
 
-<!--            <br/>-->
-<!--            <br/>-->
-<!--            <table border="1px" cellspacing="0" cellpadding="0" width="100%" style="color:black;">-->
-
-<!--                <tbody class="clearfix" name="so_total_summary">-->
-<!--                    <tr style="font-weight:bold;" >-->
-<!--                        <td align="left" style="padding:3px;width:70%;">TOTAL H.T</td>-->
-<!--                        <td align="right" style="padding:3px;width:30%;" name="td_amount_untaxed"><span t-field="doc.amount_untaxed"/></td>-->
-<!--                    </tr>-->
-<!--                    <tr style="font-weight:bold;">-->
-<!--                        <td align="left" style="padding:3px;width:70%;">TVA (20%)</td>-->
-<!--                        <td align="right" style="padding:3px;width:30%;"><span t-field="doc.amount_tax"/></td>-->
-<!--                    </tr>-->
-<!--                    <tr style="font-weight:bold;">-->
-<!--                        <td align="left" style="padding:3px;width:70%;">TOTAL T.T.C</td>-->
-<!--                        <td align="right" style="padding:3px;width:30%;" name="td_amount_total"><span t-field="doc.amount_total"/></td>-->
-<!--                    </tr>-->
-<!--                    <tr style="font-weight:bold;">-->
-<!--                        <td align="left" style="padding:3px;width:70%;">Prime Certificat d'Economie d'Energie</td>-->
-<!--                        <td align="right" style="padding:3px;width:30%;">- €</td>-->
-<!--                    </tr>-->
-<!--                    <tr style="font-weight:bold;">-->
-<!--                        <td align="left" style="padding:3px;width:70%;">NET A PAYER</td>-->
-<!--                        <td align="right" style="padding:3px;width:30%;" name="td_amount_total"><span t-field="doc.amount_total"/></td>-->
-<!--                    </tr>-->
-<!--                </tbody>-->
-<!--            </table>-->
-
             <div class="col-5 mb4 text-right" style="padding-left:15px;width:97%;">
                 <span>
                     Poste, hors volume chauffé, réseau en sous-sol/cave ou vide sanitaire. Matériel ou installation:
@@ -243,18 +217,33 @@
                 </tr>
             </table>
             <br/>
-            <!-- Custom footer -->
-            <div class="text-center" style="text-align: center;">
-                <span align="center" style="font-weight:bold;">ENERGY de FRANCE</span><br/>
-                <span align="center">SIREN: 807 839 881 R.C.S. Paris</span><br/>
-                <span align="center">54, Avenue Philippe Auguste - 75011 Paris</span><br/>
-                <span align="center">Tél:01.86.98.25.61. - 09.77.29.29.96 - Portable:07.82.61.35.26 -
-                    <a href="#  ">contact@energydefrance.fr</a>
-                </span>
+        </div>
+         <!-- Custom footer -->
+        <div class="o_report_footer">
+            <div class="o_report_company">
+                <span t-field="doc.company_id.name"/>
+                <span t-field="doc.company_id.street"/>
             </div>
         </div>
 
+<!--            <div t-attf-class="footer o_standard_footer o_company_#{doc.company_id.id}_layout">-->
+<!--            <div class="text-center" style="border-top: 1px solid black;">-->
+<!--                <div t-if="doc.company_id.name" align="center">-->
+<!--                    <span t-field="doc.company_id.name"/>-->
+<!--                    <span t-field="doc.company_id.street"/> - -->
+<!--                    <span t-field="doc.company_id.zip"/>-->
+<!--                    <span t-field="doc.company_id.city"/>-->
+<!--                </div>-->
 
+<!--                <div name="financial_infos">-->
+<!--                    <span t-field="doc.company_id.report_footer"/>-->
+<!--                </div>-->
+
+<!--                <div t-if="report_type == 'pdf'" class="text-muted">-->
+<!--                    Page: <span class="page"/> / <span class="topage"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </template>
 
     <template id="energy_report_saleorder">
