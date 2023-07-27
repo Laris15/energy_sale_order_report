@@ -24,7 +24,8 @@
     'data': [
         # 'security/ir.model.access.csv',
         'reports/energy_sale_order_report_view.xml',
-        'reports/energy_sale_order_report_template.xml',
+        'reports/energy_sale_order_report_template_html.xml',
+        # 'reports/energy_sale_order_report_template.xml',
         'views/res_partner.xml',
         'views/sale_order.xml',
     ],
