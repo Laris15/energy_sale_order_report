@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="energy_report_saleorder_document">
+
         <style>
 
             .body {
-            font-family: Helvetica, sans-serif;
+            font-family: Open Sans;
             font-size: 12px;
             color: #363636;
             box-sizing: border-box;
@@ -14,6 +15,8 @@
 
             .header{
             position: fixed;
+            font-family: Open Sans;
+            font-weight: bold;
             }
 
             .image {
@@ -25,8 +28,9 @@
 
             .adresse__1 {
             width: 100%;
-            font-weight: normal;
+            font-weight: bold;
             margin-top:-15px;
+            font-family: Open Sans;
             }
 
             .adresse__1 tr td {
@@ -42,6 +46,8 @@
 
             .adresse__2 {
             margin-left: 400px;
+            font-weight: bold;
+            font-family: Open Sans;
             }
 
             .bande th {
@@ -52,10 +58,12 @@
             background-color: #008000;
             color: black;
             font-size: 16px;
+            font-family: Open Sans;
             }
 
             .adresse__3 {
             padding: 7px;
+            font-family: Open Sans;
             }
             .adresse__3 tr.num {
             font-weight: bold;
@@ -68,10 +76,12 @@
             font-weight: bold;
             text-align: left;
             font-size: 14px;
+            font-family: Open Sans;
 
             }.adresse__3 tr.text {
             text-align: left;
             font-size: 12px;
+            font-family: Open Sans;
 
             }
 
@@ -79,47 +89,57 @@
             font-weight: bold;
             text-align: left;
             font-size: 15px;
+            font-family: Open Sans;
             }
 
             .page p {
             text-align: center;
             font-size: large;
             color: gray;
+            font-family: Open Sans;
             }
 
             .account {
             width: 100%;
+            font-family: Open Sans;
             }
 
             .table__header {
             background-color: #008000;
             color: white;
+            font-family: Open Sans;
             }
 
             .table__header th {
             padding: 0.5rem 0.5rem;
             text-align: left;
+            font-family: Open Sans;
             }
 
             .align__right {
             text-align: right !important;
+            font-family: Open Sans;
             }
 
             .align__left {
             text-align: left !important;
+            font-family: Open Sans;
             }
 
             .table__row td {
             padding: 0.5rem 0.5rem;
             border-bottom: 1.25px solid #f7f7f7;
+            font-family: Open Sans;
             }
 
             .table__row td.number {
             text-align: right;
+            font-family: Open Sans;
             }
 
             .table__row td.text {
             text-align: left;
+            font-family: Open Sans;
             }
 
             .bottom__text {
@@ -127,6 +147,7 @@
             padding: 1rem 0;
             color: #363636;
             line-height: 1.125;
+            font-family: Open Sans;
             }
 
             .aside{
@@ -141,26 +162,31 @@
             width: 55%;
             margin-top: 25px;
             font-size: 12px;
+            font-family: Open Sans;
             }
 
             .bold {
             font-weight: bold;
+            font-family: Open Sans;
             }
 
             tr.top__bold td {
             border-top: 1.5px solid black;
+            font-family: Open Sans;
             }
 
             tr.bottom__bold td {
             border-bottom: 1.5px solid black;
+            font-family: Open Sans;
             }
 
             span {
-            font-weight: normal;
             font-size: 14px;
+            font-family: Open Sans;
             }
             p {
             font-size: 14px;
+            font-family: Open Sans;
             }
             .footer {
             border-top: 1.5px solid black;
@@ -169,18 +195,22 @@
             width: 100%;
             color: black;
             margin: 20px;
+            font-family: Open Sans;
             }
             .footer tr.first {
             text-align: center;
             font-size: medium;
+            font-family: Open Sans;
             }
-            .email{
+            .green{
             color: #008000;
+            font-family: Open Sans;
             }
             .adress {
             margin-top: 20px;
             min-height: 100px;
             width: 100%;
+            font-family: Open Sans;
             }
 
             .bloc1,
@@ -188,9 +218,11 @@
             width: 200px;
             font-weight: bold;
             font-size: large;
+            font-family: Open Sans;
             }
             .amount{
             font-weight: bold;
+            font-family: Open Sans;
             }
 
         </style>
@@ -206,7 +238,7 @@
             <table class="adresse__1" cellspacing="0" style="margin-left:40px">
                 <tr t-if="doc.company_id.name">
                     <td>
-                        <span t-field="doc.company_id.name"/>
+                        <span class="green" t-field="doc.company_id.name"/>
                     </td>
                 </tr>
                 <tr t-if="doc.company_id.street">
@@ -462,7 +494,7 @@
                     - Portable :
                     <span t-field="doc.company_id.partner_id.mobile"/>
                     -
-                    <span class="email" t-field="doc.company_id.email"/>
+                    <span class="green" t-field="doc.company_id.email"/>
                 </td>
             </tr>
         </table>
