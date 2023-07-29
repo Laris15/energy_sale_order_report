@@ -13,7 +13,9 @@
                 <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='name']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-
+                <xpath expr="//form/sheet/group/group[2]/field[@name='payment_term_id']" position="after">
+                    <field name="operation_type" invisible='1'/>
+                </xpath>
             </field>
         </record>
 
