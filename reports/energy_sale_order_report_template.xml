@@ -1,249 +1,535 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="energy_report_saleorder_document">
-        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
-        <div class="page" style="height: 100%;width:90%;" align="center">
-            <!--            custom header-->
-            <div class="header" t-att-style="report_header_style"
-                 style="font-family: Lato, Lucida Grande, Helvetica neue, Helvetica, Verdana, Arial, sans-serif;height: 30%;width:width:90%;">
-                <div class="row zero_min_height">
-                    <img src="/energy_sale_order_report/static/description/logo.png" alt="Image is not loading"
-                         style="height: 100px;
-                                width: 100px;"/>
-                </div>
-                <div class="row" style="font-weight:bold;font-size:16px;">
-                    <div class="col-5 mb4">
-                        <div t-if="doc.company_id.name">
-                            <span t-field="doc.company_id.name"/>
-                        </div>
-                        <div t-if="doc.company_id.street">
-                            <span t-field="doc.company_id.street"/>
-                        </div>
-                        <div t-if="doc.company_id.street">
-                            <span t-field="doc.company_id.zip"/>
-                            -
-                            <span t-field="doc.company_id.city"/>
-                        </div>
-                         <div t-if="doc.company_id.phone">Tel:
-                            <span class="o_force_ltr" t-field="doc.company_id.phone"/>
-                        </div>
-                        <div t-if="doc.company_id.email">
-                            <span t-field="doc.company_id.email"/>
-                        </div>
-                    </div>
-                </div>
-                <br/>
-                <br/>
-                <div class="row" style="font-weight:bold;font-size:16px;" align="right">
-                    <div class="col-5 mb4">
-                        <div t-if="doc.partner_id.name">
-                            <span t-field="doc.partner_id.name"/>
-                        </div>
-                        <div t-if="doc.partner_id.street">
-                            <span t-field="doc.partner_id.street"/>
-                        </div>
-                        <div t-if="doc.partner_id.street2">
-                            <span t-field="doc.partner_id.street2"/>
-                        </div>
-                        <div t-if="doc.partner_id.siret">
-                            SIRET: <span t-field="doc.partner_id.siret"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row"
-                     style="font-size:20px;font-family:Helvetica;height:40px;background-color:green; color:white; padding:5px" align="center">
-                    <div>DEVIS</div>
-                </div>
-                <div class="row" style="font-weight:bold;font-size:14px;width:80%;">
-                    <div class="col-5 mb4">
-                        <div align="right">
-                            <strong>N° : <span t-field="doc.name"/></strong>
-                        </div>
-                        <div align="right">
-                            <strong>Date : <span class="m-0" t-field="doc.date_order"/></strong>
-                        </div>
-                    </div>
-                </div>
-                <!--            <br/>-->
-                <h6 style="font-weight:bold;font-size:17px;">ISOLATION D'UN RESEAU HYDRAULIQUE D'EAU CHAUDE SANITAIRE ET CHAUFFAGE HORS VOLUME CHAUFFE</h6>
-                <p style="font-size:12px;">
-                    Dépose et enlèvement de l'ancien calorifuge. Pose d'un calorifuge neuf conforme à la réglementation
-                    RT
-                    2012 avec
-                    un isolant de classe supérieureou égal à 4 selon la norme NF en 12 828+A1 : 2014. Réseau en sous-sol
-                    /
-                    cave/ parking
-                    / parties communes.
-                </p>
-<!--                <div>Operation: <span t-field="doc.operation_type"/> </div>-->
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
+        <style>
+
+
+            .o_report_layout_standard .body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+            color: #363636;
+            box-sizing: border-box;
+            max-width: 800px;
+            margin: 0 auto;
+            }
+
+            .header{
+            font-weight: bold;
+            font-family: 'Open Sans', sans-serif;
+            }
+
+            .image {
+            height: 50px;
+            width: 50px;
+            margin: 2px;
+            margin-left: -35px;
+            }
+
+            .header .adresse__1 {
+            width: 100%;
+            font-weight: bold;
+            margin-top:-15px;
+            }
+
+            .header .adresse__1 .green {
+            color: #008000;
+            }
+
+            .adresse__1 tr td {
+            margin: 2px;
+            font-size: medium;
+            }
+
+            .adresse__2 tr td {
+            margin: 2px;
+            font-size: medium;
+            margin-top: 20px;
+            }
+
+            .adresse__2 {
+            margin-left: 400px;
+            font-weight: bold;
+            }
+
+            .bande th {
+            text-align: left;
+            padding: 0.5rem 0.5rem;
+            height: 40px;
+            width: 100%;
+            background-color: #008000;
+            color: black;
+            font-size: 26px;
+            }
+
+            .adresse__3 {
+            padding: 12px;
+            }
+            .adresse__3 tr.num {
+            font-weight: bold;
+            text-align: right;
+            font-size: medium;
+            margin: 12px;
+            }
+
+            .adresse__3 tr.title {
+            font-weight: bold;
+            text-align: left;
+            font-size: 14px;
+
+            }
+            }.adresse__3 tr {
+            margin: 12px;
+            }
+            .adresse__3 tr.text {
+            text-align: left;
+            font-size: 12px;
+            margin: 12px;
+            }
+
+            .adresse__3 tr.operation {
+            font-weight: bold;
+            text-align: left;
+            font-size: 15px;
+            text-decoration: underline;
+            margin: 12px;
+            }
+
+            .page p {
+            text-align: center;
+            font-size: large;
+            color: gray;
+            }
+
+            .account {
+            width: 100%;
+            }
+
+            .table__header {
+            background-color: #008000;
+            color: white;
+            }
+
+            .table__header th {
+            padding: 0.5rem 0.5rem;
+            text-align: left;
+            }
+
+            .align__right {
+            text-align: right !important;
+            }
+
+            .align__left {
+            text-align: left !important;
+            }
+
+            .table__row td {
+            padding: 0.5rem 0.5rem;
+            border-bottom: 1.25px solid #f7f7f7;
+            }
+
+            .table__row td.number {
+            text-align: right;
+            }
+
+            .table__row td.text {
+            text-align: left;
+            }
+
+            .bottom__text {
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            color: #363636;
+            line-height: 1.125;
+            }
+
+            .aside{
+            min-height:20%;
+            }
+
+            .down{
+            min-height:100px;
+            }
+
+            .total {
+            width: 55%;
+            margin-top: 25px;
+            font-size: 12px;
+            }
+
+            .bold {
+            font-weight: bold;
+            }
+
+            tr.top__bold td {
+            border-top: 1.5px solid black;
+            font-size: 14px;
+            }
+
+            tr.bottom__bold td {
+            border-bottom: 1.5px solid black;
+            font-size: 14px;
+            }
+
+            .paragraph {
+            font-size: 14px;
+            margin: 5px;
+            color: black;
+            align-items: center;
+            justify-content: center;
+            text-justify: none;
+            position: relative;
+            }
+            <!--            p {-->
+            <!--            font-size: 14px;-->
+            <!--            }-->
+            .o_standard_footer .footer {
+            border-top: 1.5px solid black;
+            <!--            position: fixed;-->
+            <!--            bottom: 0;-->
+            width: 100%;
+            color: black;
+            }
+            .footer tr.first {
+            text-align: center;
+            font-size: 12px;
+            }
+            .green{
+            color: #008000;
+            }
+            .adress {
+            margin-top: 20px;
+            min-height: 100px;
+            width: 100%;
+            }
+
+            .bloc1,
+            .bloc2 {
+            width: 200px;
+            font-weight: bold;
+            font-size: large;
+            }
+
+        </style>
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+        <!--        <div class="page" align="center">-->
+        <div class="header" t-att-style="report_header_style" style="position:absolute;top:0;">
+            <div class="row zero_min_height">
+                <img class="image" src="/energy_sale_order_report/static/description/logo.png"
+                     alt="Image is not loading"
+                     style="height: 120px;
+                            width: 150px;margin-left:40px;"/>
             </div>
-            <br/>
-            <table class="table table-sm o_main_table" style="margin-top: 200px;width:90%;">
-                <!-- In case we want to repeat the header, remove "display: table-row-group" -->
-                <thead style="display: table-row-group; background-color:green;">
-                    <tr>
-                        <th name="th_address" class="text-left">Address</th>
-                        <th name="th_location" class="text-left">Location</th>
-                        <th name="th_quantity" class="text-right">Quantity</th>
-                        <th name="th_priceunit" class="text-right">Unit Price</th>
-                        <th name="th_subtotal" class="text-right">Amount</th>
+            <table class="adresse__1" cellspacing="0" style="margin-left:40px;font-weight: bold;">
+                <tr t-if="doc.company_id.name">
+                    <td>
+                        <span style="color: #008000;text-transform: uppercase;" class="green"
+                              t-field="doc.company_id.name"/>
+                    </td>
+                </tr>
+                <tr t-if="doc.company_id.street">
+                    <td>
+                        <span t-field="doc.company_id.street"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span t-field="doc.company_id.zip"/>
+                        -
+                        <span t-field="doc.company_id.city"/>
+                    </td>
+                </tr>
+                <tr t-if="doc.company_id.phone">
+                    <td>Tél :
+                        <span class="o_force_ltr" t-field="doc.company_id.phone"/>
+                    </td>
+                </tr>
+                <tr t-if="doc.company_id.email">
+                    <td>
+                        <span t-field="doc.company_id.email"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div t-attf-class="article o_report_layout_standard" style="position:absolute;top: 100px">
+            <t t-out="0"/>
+            <div class="body" style="font-family: 'Open Sans', sans-serif;font-size: 12px;clear: both;color:#363636;box-sizing:border-box;max-width: 800px;margin-left:35px">
+                <table class="adresse__2" cellspacing="0" style="margin-left:400px;font-weight:bold;">
+                    <tr t-if="doc.partner_id.name">
+                        <td style="margin: 2px;font-size: medium;margin-top: 20px;">
+                            <span style="text-transform: uppercase;" t-field="doc.partner_id.name"/>
+                        </td>
                     </tr>
-                </thead>
-                <tbody class="sale_tbody">
+                    <tr t-if="doc.partner_id.street">
+                        <td style="margin: 2px;font-size: medium;margin-top: 20px;">
+                            <span t-field="doc.partner_id.street"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="margin: 2px;font-size: medium;margin-top: 20px;">
+                            <span t-field="doc.partner_id.zip"/>
+                            <span t-field="doc.partner_id.city"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="margin: 2px;font-size: medium;margin-top: 20px;">
+                            <span t-field="doc.partner_id.country_id"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="margin: 2px;font-size: medium;margin-top: 20px;">
+                            <span t-field="doc.partner_id.email"/>
+                        </td>
+                    </tr>
+                    <tr t-if="doc.partner_id.siret">
+                        <td style="margin: 2px;font-size: medium;margin-top: 20px;">SIREN:
+                            <span t-field="doc.partner_id.siret"/>
+                        </td>
+                    </tr>
+                </table>
+                <table class="bande">
+                    <th class="quotation" colspan="2" style="text-align: left;
+                        padding: 0.5rem 0.5rem;
+                        height: 22px;
+                        width: 100%;
+                        background-color: #008000;
+                        color: white;
+                        font-size: 18px;">Devis</th>
+                    <th></th>
+                </table>
+                <table class="adresse__3" style="margin: 14px;">
+                    <tr class="num" style="margin: 14px;font-weight: bold;text-align: right;font-size: medium;margin: 12px;">
+                        <td>N° :
+                            <span t-field="doc.name"/>
+                        </td>
+                    </tr>
+                    <tr class="num" style="margin: 14px;font-weight: bold;text-align: right;font-size: medium;margin: 12px;">
+                        <td>Date du devis :
+                            <span class="m-0" t-field="doc.date_order"/>
+                        </td>
+                    </tr>
+                    <tr class="title" style="margin: 14px;font-weight: bold;text-align: left;font-size: 15px;">
+                        <td>ISOLATION D'UN RESEAU HYDRAULIQUE D'EAU CHAUDE SANITAIRE ET CHAUFFAGE HORS VOLUME CHAUFFE
+                        </td>
+                    </tr>
+                    <tr class="text" style="margin:14px;text-align: left;font-size: 12px;">
+                        <td>Dépose et enlèvement de l'ancien calorifuge. Pose d'un calorifuge neuf conforme à la
+                            réglementation
+                            RT 2012
+                            avec un isolant de classe supérieureou égal à 4 selon
+                            la norme NF en 12 828+A1 : 2014. Réseau en sous-sol / cave/ parking / parties communes.
+                        </td>
+                    </tr>
+                    <tr class="operation" style="margin:14px;font-weight:bold;text-align:left;font-size: 15px;text-decoration:underline;margin: 12px;">
+                        <td>Operation:
+                            <span t-field="doc.operation_type"/>
+                        </td>
+                    </tr>
+                </table>
+                <table class="account" cellspacing="0" style="width: 100%;">
+                    <thead>
+                        <tr class="table__header" style="background-color: #008000;color: white;font-size: 16px;">
+                            <th style="width:40%;padding: 0.5rem 0.5rem;text-align: left;">Adresse d'intervention</th>
+                            <th style="width:15%;padding: 0.5rem 0.5rem;text-align: left;">Localisation</th>
+                            <th class="align__right" style="width:15%;padding: 0.5rem 0.5rem;text-align: right !important;">Quantité</th>
+                            <th class="align__right" style="width:15%;padding: 0.5rem 0.5rem;text-align: right !important;">Prix unitaire</th>
+                            <th class="align__right" style="width:15%;padding: 0.5rem 0.5rem;text-align: right !important;">Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="current_subtotal" t-value="0"/>
 
-                    <t t-set="current_subtotal" t-value="0"/>
-
-                    <t t-foreach="doc.order_line" t-as="line">
-
-                        <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
-                            <t t-if="not line.display_type">
-                                <td name="td_address"><span t-field="line.address"/></td>
-                                <td name="td_localisation"><span t-field="line.localisation"/></td>
-                                <td name="td_quantity" class="text-right">
+                        <t t-foreach="doc.order_line" t-as="line">
+                            <tr class="table__row" style="font-size:16px;">
+                                <td class="text" style="font-size:16px;text-align: left;width:35%;padding: 0.5rem 0.5rem;border-bottom: 1.25px solid #f7f7f7;">
+                                    <span t-field="line.address"/>
+                                </td>
+                                <td class="text" style="font-size:16px;text-align: left;width:20%;padding: 0.5rem 0.5rem;border-bottom: 1.25px solid #f7f7f7;">
+                                    <span t-field="line.localisation"/>
+                                </td>
+                                <td class="number" style="font-size:16px;text-align: right;width:15%;padding: 0.5rem 0.5rem;border-bottom: 1.25px solid #f7f7f7;">
                                     <span t-field="line.product_uom_qty"/>
                                     <span t-field="line.product_uom"/>
                                 </td>
-                                <td name="td_priceunit" class="text-right">
+                                <td class="number" style="font-size:16px;text-align: right;width:15%;padding: 0.5rem 0.5rem;border-bottom: 1.25px solid #f7f7f7;">
                                     <span t-field="line.price_unit"/>
                                 </td>
-                                <td name="td_subtotal" class="text-right o_price_total">
+                                <td class="number" style="font-size:16px;text-align: right;width:15%;padding: 0.5rem 0.5rem;border-bottom: 1.25px solid #f7f7f7;">
                                     <span t-field="line.price_subtotal"/>
                                 </td>
-                            </t>
+                            </tr>
+                        </t>
+                        <tr style="font-weight:bold;font-size:16px;">
+                            <td style="padding:3px;" align="left" colspan="2">
+                                <p style="text-decoration: underline;font-size:16px;">TOTAL METRE LINEAIRE :</p>
+                            </td>
+                            <td align="right" style="padding:3px;font-size:16px;"><span t-esc="doc.get_total_qty()"/>ML
+                            </td>
+                            <td align="right" style="padding:3px;font-size:16px;"></td>
+                            <td align="right" style="padding:3px;font-size:16px;">
+                                <span t-field="doc.amount_untaxed"/>
+                            </td>
                         </tr>
-                    </t>
-                </tbody>
-            </table>
+                    </tbody>
 
-            <div class="clearfix" name="so_total_summary">
-                <div id="total" class="row" name="total">
-                    <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto">
-                        <table class="table table-sm">
-                            <tr style="font-weight:bold;">
-                                <td align="left" style="padding:3px;width:70%;">TOTAL H.T</td>
-                                <td align="right" style="padding:3px;width:30%;" name="td_amount_untaxed">
-                                    <span t-field="doc.amount_untaxed"/>
-                                </td>
-                            </tr>
-                            <tr style="font-weight:bold;">
-                                <td align="left" style="padding:3px;width:70%;">TVA (20%)</td>
-                                <td align="right" style="padding:3px;width:30%;">
-                                    <span t-field="doc.amount_tax"/>
-                                </td>
-                            </tr>
-                            <tr style="font-weight:bold;">
-                                <td align="left" style="padding:3px;width:70%;">TOTAL T.T.C</td>
-                                <td align="right" style="padding:3px;width:30%;" name="td_amount_total">
-                                    <span t-field="doc.amount_total"/>
-                                </td>
-                            </tr>
-                            <tr class="border-black o_subtotal" style="">
-                                <td name="td_amount_untaxed_label">
-                                    <strong>Prime Certificat d'Economie d'Energie</strong>
-                                </td>
-                                <td name="td_amount_untaxed" class="text-right">
-                                    -
-                                    <span t-field="doc.amount_total"/>
-                                </td>
-                            </tr>
-                            <tr class="border-black o_subtotal" style="">
-                                <td name="td_amount_untaxed_label">
-                                    <strong>NET A PAYER</strong>
-                                </td>
-                                <td name="td_amount_untaxed" class="text-right">
-                                    <span>0,00€</span>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <tr class="table__row"></tr>
+                </table>
+                <div style="float:right; width:55%;" align="right">
+                    <table cellspacing="0" style="width:100%;margin-top:15px;" class="total" align="right">
+                        <tr class="table__row top__bold" style="font-size:16px;margin:14px;">
+                            <td class="bold" style="font-weight:bold;border-top: 1.5px solid black;font-size:16px;">TOTAL HT</td>
+                            <td class="number" style="text-align: right;border-top: 1.5px solid black;font-size: 16px;">
+                                <span t-field="doc.amount_untaxed"/>
+                            </td>
+                        </tr>
+                        <tr class="table__row bottom__bold" style="font-size:16px;margin:14px;">
+                            <td style="border-bottom: 1.5px solid black;font-size: 16px;border-top: 1.5px solid gray;">TVA 20%</td>
+                            <td class="number" style="text-align:right;border-bottom:1.5px solid black;border-top: 1.5px solid gray;1.5px solid black;font-size: 16px;">
+                                <span t-field="doc.amount_tax"/>
+                            </td>
+                        </tr>
+                        <tr class="table__row bottom__bold" style="font-size:16px;margin:14px;">
+                            <td class="bold" style="font-weight: bold;border-bottom: 1.5px solid black;font-size: 16px;">Total T.T.C</td>
+                            <td class="number" style="text-align: right;border-bottom: 1.5px solid black;font-size: 16px;">
+                                <span t-field="doc.amount_total"/>
+                            </td>
+                        </tr>
+                        <tr class="table__row bottom__bold" style="font-size:16px;margin:14px;">
+                            <td class="bold" style="font-weight: bold;font-size:16px;">Prime Certificat d'Economie d'Energie</td>
+                            <td class="number" style="text-align: right;font-size:16px;">-
+                                <span t-field="doc.amount_total"/>
+                            </td>
+                        </tr>
+                        <tr class="table__row" style="font-size:16px;margin:14px;">
+                            <td class="bold" style="font-weight: bold;font-size:16px;border-top: 1.5px solid black;">NET A PAYER</td>
+                            <td class="number bold" style="text-align:right;font-weight:bold;font-size:16px;border-top: 1.5px solid black;">0,00€</td>
+                        </tr>
+                    </table>
                 </div>
-            </div>
+                <div class="bottom__text" style="font-family: 'Open Sans', sans-serif;text-align: justify;clear:both;">
+                    <span class="paragraph" style="font-family: 'Open Sans',sans-serif;text-align:justify;font-size:11px;">
+                        Poste, hors volume chauffé, réseau en sous-sol/cave ou vide sanitaire. Matériel ou installation:
+                        Dépose ou enlèvement de l'ancien calorifuge Pose d'un calorifuge neuf de marque ISOVER, Type U
+                        PROTECT PIPE SECTION ALU 2 conforme à la réglementation RT2012, avec un isolant de classe
+                        supérieure
+                        ou égale à 4, selon la norme NF en 12 828 +A1: 2014. Consommable (masque à poussière,
+                        combinaison,
+                        sac à ordures, polyane pour protection des sols). Fourniture et posse de coquille de laine de
+                        rôche
+                        revêtue d'aluminium, joints colés par adhésif aluminium.Lépaisseur installée, soit 20,
+                        30,40,50,60,70
+                        mm sera déterminée selon le diamètre de la tuyauterie, par la conformité en classe 4. Mise en
+                        sacs
+                        à gravats et évacuation, finition, rangement,replis du chantier.
+                    </span>
+                    <br/>
+                    <span class="paragraph" style="font-family: 'Open Sans',sans-serif;text-align:justify;font-size:11px;">
+                        Les travaux ou prestations, objet du présent document, donneront lieu à une contribution
+                        financière
+                        VERIGO, versée par <span style="font-weight:bold;">VERTIGO</span> dans le cadre de son rôle incitatif, sous
+                        forme
+                        de prime, directement ou via son(ses) mandataire(s), sous réserve de l'engagement de fournir
+                        exclusivement
+                        à <span style="font-weight:bold;">VERTIGO</span>, les documents nécessaires à la valorisation des opérations
+                        ou
+                        titre du
+                        dispositif des Certificat d'Economies d'Energie et sous réserve de la validation de
+                        l'éligibilité du
+                        dossier
+                        par <span style="font-weight:bold;">VERTIGO</span> puis par l'autorité administrative compétente. Le montant
+                        de
+                        cette
+                        contribution financière, hors champ d'application de la T.V.A, est susceptible de varier en
+                        fonction
+                        des
+                        travaux effectivement réalisés et du volume des CEE attribués à l'opération et est estimé à :
+                        <span style="font-weight:bold;" t-field="doc.amount_total"/>
 
-            <div class="col-5 mb4 text-right" style="padding-left:15px;width:97%;">
-                <span>
-                    Poste, hors volume chauffé, réseau en sous-sol/cave ou vide sanitaire. Matériel ou installation:
-                    Dépose
-                    ou enlèvement de l'ancien calorifuge Pose d'un calorifuge neuf de marque ISOVER, Type U PROTECT PIPE
-                    SECTION
-                    ALU 2 conforme à la réglementation RT2012, avec un isolant de classe supérieure ou égale à 4, selon
-                    la
-                    norme NF
-                    en 12 828 +A1: 2014. Consommable (masque à poussière, combinaison, sac à ordures, polyane pour
-                    protection des sols).
-                    Fourniture et posse de coquille de laine de rôche revêtue d'aluminium, joints colés par adhésif
-                    aluminium.Lépaisseur installée, soit 20,
-                    30,40,50,60,70 mm sera déterminée selon le diamètre de la tuyauterie, par la conformité en classe 4.
-                    Mise en sacs à gravats et évacuation, finition, rangement,replis du chantier.
-                </span>
-                <br/>
-                <br/>
-                <span>
-                    Les travaux ou prestations, objet du présent document, donneront lieu à une contribution financière
-                    VERIGO, versée par VERTIGO dans le
-                    cadre de son rôle incitatif, sous forme de prime, directement ou via son(ses) mandataire(s), sous
-                    réserve de l'engagement de fournir exclusivement
-                    à VERTIGO, les documents nécessaires à la valorisation des opérations ou titre du dispositif des
-                    Certificat d'Economies
-                    d'Energie et sous réserve de la validation de l'éligibilité du dossier par VERTIGO puis par
-                    l'autorité
-                    administrative compétente. Le montant de
-                    cette contribution financière, hors champ d'application de la T.V.A, est susceptible de varier en
-                    fonction des travaux effectivement réalisés et du
-                    volume des CEE attribués à l'opération et est estimé à : MONTANT TTC
-                </span>
-                <br/>
-                <span>
-                    Le client accepte que la société ENERGY de FRANCE, mandataire de VERTIGO collecte et traite ces
-                    données
-                    à caractère personnel pour les besoins du
-                    dépot d'un dossier CEE sur le registre EMMY conformément aux dispositions réglementaires en vigueur
-                    et
-                    qu'il communique ces
-                    données à VERTIGO à des fins de contrôle de la conformité des opérations réalisés chez le client.
-                    VERTIGO s'engage à respecter la réglementation
-                    française et européenne relative à la protection des données à caractère personnel.
-                </span>
+                    </span>
+                    <br/>
+                    <span class="paragraph" style="font-family: 'Open Sans',sans-serif;text-align:justify;font-size:11px;">
+                        Le client accepte que la société <span style="font-weight:bold;">ENERGY de FRANCE</span>, mandataire de
+                        <span style="font-weight:bold;">VERTIGO</span>
+                        collecte et traite ces données à caractère personnel pour les besoins du dépot d'un dossier CEE
+                        sur
+                        le registre EMMY
+                        conformément aux dispositions réglementaires en vigueur et qu'il communique ces données à
+                        <span style="font-weight:bold;">VERTIGO</span>
+                        à des fins de contrôle de la conformité des opérations réalisés chez le client. <span
+                           style="font-weight:bold;">VERTIGO</span> s'engage à
+                        respecter la réglementation française et européenne relative à la protection des données à
+                        caractère
+                        personnel.
+                    </span>
+                </div>
+                <table class="adress" cellspacing="0" style="margin-top: 100px;width: 100%;;">
+                    <tr style="margin-bottom: 50px;">
+                        <td>
+                            <div class="bloc1" style="width:200px;font-weight: bold;font-size:large;margin-bottom:30px;">
+                                <u>Bon pour accord le :</u>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="bloc2" style="width: 200px;font-weight: bold;font-size:large;margin-bottom: 30px;">
+                                <u>Nom et Prénom</u>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="bloc1" style="width:200px;font-weight:bold;font-size:large;margin-bottom: 30px;">
+                                <u>Signature et Cachet :</u>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="bloc2" style="width: 200px;font-weight: bold;font-size: large;margin-bottom: 30px;">
+                                <u>Fonction :</u>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="middle"></div>
             </div>
-            <br/>
-            <table style="width:100%;">
-                <tr>
-                    <td style="text-decoration:underline;font-weight:bold;">Bon pour accord le :</td>
-                    <td style="text-decoration:underline;font-weight:bold;">Nom et Prénom :</td>
+        </div>
+        <div class="footer o_standard_footer" style="display:flex;width:100%;color: black;border-top: 1.5px solid black;margin-top:10px;padding-top:20px;" align="center">
+            <table class="text-center">
+                <tr class="first" style="text-align: center;font-size: 14px;">
+                    <td>
+                        <span t-field="doc.company_id.name"/>
+                        -
+                        <span t-field="doc.company_id.street"/>,
+                        <span t-field="doc.company_id.zip"/>
+                        <span t-field="doc.company_id.city"/>
+                        - SARL au Capital de 100 000€ -
+                    </td>
                 </tr>
-
-                <tr>
-                    <td style="text-decoration:underline;font-weight:bold;">Signature et Cachet :</td>
-                    <td style="text-decoration:underline;font-weight:bold;">Fonction :</td>
+                <tr class="first" style="text-align: center;font-size: 14px;">
+                    <td>SIRET
+                        <span t-field="doc.company_id.siret"/>
+                        <span t-field="doc.company_id.company_registry"/>
+                        - Code APE
+                        <span t-field="doc.company_id.ape"/>
+                    </td>
+                </tr>
+                <tr class="first" style="text-align: center;font-size: 14px;">
+                    <td>Tél :
+                        <span t-field="doc.company_id.phone"/>
+                        - Portable :
+                        <span t-field="doc.company_id.partner_id.mobile"/>
+                        -
+                        <span t-field="doc.company_id.email" class="green" style="color: #008000;" />
+                    </td>
                 </tr>
             </table>
-            <br/>
-        </div>
-         <!-- Custom footer -->
-        <div class="o_report_footer">
-            <div class="o_report_company">
-                <span t-field="doc.company_id.name"/>
-                <span t-field="doc.company_id.street"/>
+            <div t-if="report_type == 'pdf'" class="text-muted" style="margin-bottom:0px">
+                Page:
+                <span class="page"/>
+                /
+                <span class="topage"/>
             </div>
         </div>
 
-<!--            <div t-attf-class="footer o_standard_footer o_company_#{doc.company_id.id}_layout">-->
-<!--            <div class="text-center" style="border-top: 1px solid black;">-->
-<!--                <div t-if="doc.company_id.name" align="center">-->
-<!--                    <span t-field="doc.company_id.name"/>-->
-<!--                    <span t-field="doc.company_id.street"/> - -->
-<!--                    <span t-field="doc.company_id.zip"/>-->
-<!--                    <span t-field="doc.company_id.city"/>-->
-<!--                </div>-->
-
-<!--                <div name="financial_infos">-->
-<!--                    <span t-field="doc.company_id.report_footer"/>-->
-<!--                </div>-->
-
-                <div t-if="report_type == 'pdf'" class="text-muted">
-                    Page: <span class="page"/> / <span class="topage"/>
-                </div>
-<!--            </div>-->
-<!--        </div>-->
     </template>
 
     <template id="energy_report_saleorder">
@@ -253,6 +539,4 @@
             </t>
         </t>
     </template>
-
-
 </odoo>
